@@ -6,6 +6,12 @@ from etatcase import EtatCase
 class Grille():
 
     def __init__(self, size, nb_mines_initiales):
+        """Initialise la grille, placement des mines et des cases numérotées et vides.
+
+        Args:
+            size (list[2]): nb lignes et colonnes de la grille
+            nb_mines_initiales (int): nb mines au début de la partie
+        """
         self.l = size[0]
         self.c = size[1]
 
@@ -107,11 +113,26 @@ class Grille():
 
 
     def trouver_case(self, l, c):
-    
-        pass
+        """ Retourne la case correspondant à la ligne l et colonne c.
+
+        Args:
+            l (int: num de ligne de la case
+            c (int): num de colonne de la case
+
+        Returns:
+            Case: case cherchée
+        """
+
+        return self.cases[l,c]
 
     def marquer_case(self, case):
-        pass
+        """ Marque la case.
+
+        Args:
+            case (Case): case à marquer
+        """
+
+        case.marquer()
 
     def decouvrir_case(self, case):
         pass

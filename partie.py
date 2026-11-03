@@ -11,10 +11,12 @@ class Partie():
 
     def jouer(self):
         # demander le niveau de difficulté (input)
-        g = Grille(self.taille_grille)
+        self.grille = Grille(self.taille_grille)
 
     def marquer_case(self, l, c):
-        pass
+        
+        case = self.grille.trouver_case(l,c)
+        self.grille.marquer_case(case)
 
     def decouvrir_case(self, l, c):
         pass

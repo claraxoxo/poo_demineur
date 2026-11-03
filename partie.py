@@ -16,10 +16,15 @@ class Partie():
     def marquer_case(self, l, c):
         
         case = self.grille.trouver_case(l,c)
-        self.grille.marquer_case(case)
+        reussite_marquage = self.grille.marquer_case(case)
+
+        if reussite_marquage:
+            self.nb_mines_restantes -=1
 
     def decouvrir_case(self, l, c):
-        pass
+        
+        case = self.grille.trouver_case(l,c)
+        self.grille.decouvrir_case(case)
         
 
 

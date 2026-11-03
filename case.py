@@ -21,7 +21,7 @@ class Case():
             return False
 
         elif self.etat == EtatCase.devoilee:
-            print('Cette case est déjà dévoilée. \n Faites une autre action.')
+            print('Cette case est déjà dévoilée, vous ne pouvez pas la marquer. \n Faites une autre action.')
             return False
         
         else:
@@ -37,16 +37,45 @@ class Case():
 
         self.etat = e
 
+    def decouvrir(self):
+
+        if self.etat == EtatCase.marquee:
+
+            print('Cette case est déjà marquée. \n Faites une autre action.')
+            etat_partie = True
+            return False, etat_partie
+
+        elif self.etat == EtatCase.devoilee:
+            print('Cette case est déjà dévoilée. \n Faites une autre action.')
+            etat_partie = True
+            return False, etat_partie
+        
+        else:
+            self.changer_etat(EtatCase.devoilee)
+            etat_partie = self.decouvrir()
+    
+            return True, etat_partie
 
 
 class CaseMinee(Case):
-    pass
+    
+    def decouvrir(self):
+
+        print("Vous avez découvert une bombe !!!! C'est fini....")
+        return False
+
 
 class CaseNumerotee(Case):
     
     def __init__(self, state, ligne, colonne, numero):
         super().__init__(state, ligne, colonne)
         self.num = numero
+    
+    def decouvrir(self):
+        pass
 
 class CaseVide(Case):
-    pass
+    
+    def decouvrir(self):
+        pass
+

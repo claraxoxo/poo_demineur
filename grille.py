@@ -48,6 +48,8 @@ class Grille():
 
     def __str__(self):
         """ Affiche la grille du démineur avec des symboles différents en fonction de la case et de son état.
+
+            str: retourne le string représentant la grille
         """
 
         strings = []
@@ -88,7 +90,7 @@ class Grille():
             b (int): num de la colonne
 
         Returns:
-            list: liste des coord des voisins, peut varier entre 3 et 8 voisins
+            list: liste des coord des voisin dont la taille peut varier entre 3 et 8 voisins
         """
         
         coord_voisins = [
@@ -105,10 +107,35 @@ class Grille():
         coord_valides = []
         for couple in coord_voisins :
 
-            if (0 <= couple[0] < self.c) or (0 <= couple[1] < self.l):
+            if (0 <= couple[0] < self.l) and (0 <= couple[1] < self.c):
                 coord_valides.append(couple)
 
         return coord_valides
+    
+    def devoiler_voisins(self, case):
+
+        coord_voisins_case_vide = self.get_voisins(case.l, case.c)
+        for coord in coord_voisins_case_vide:
+
+            x,y = coord[0], coord[1]
+            case_voisine = self.trouver_case(x,y)
+
+            if case_voisine.etat == EtatCase.devoilee:
+                continue
+            elif case_voisine.etat == EtatCase.marquee:
+                continue
+            elif case_voisine.etat == EtatCase.cachee:
+
+                if isinstance(case_voisine, CaseMinee):
+                    continue 
+
+                elif isinstance(case_voisine, CaseNumerotee):
+                    case_voisine.changer_etat(EtatCase.devoilee)
+                
+                elif isinstance(case_voisine, CaseVide):
+                    case_voisine.changer_etat(EtatCase.devoilee)
+                    self.devoiler_voisins(case_voisine)
+
         
 
 
@@ -116,7 +143,7 @@ class Grille():
         """ Retourne la case correspondant à la ligne l et colonne c.
 
         Args:
-            l (int: num de ligne de la case
+            l (int): num de ligne de la case
             c (int): num de colonne de la case
 
         Returns:
@@ -132,7 +159,18 @@ class Grille():
             case (Case): case à marquer
         """
 
-        case.marquer()
+        marquage_reussi = case.marquer()
+
+        return marquage_reussi
 
     def decouvrir_case(self, case):
-        pass
+        
+        decouverte_reussie, etat_partie = case.decouvrir()
+
+        if isinstance(case, CaseVide) and decouverte_reussie:
+
+            self.devoiler_voisins(case)
+            
+            
+
+

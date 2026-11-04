@@ -149,8 +149,11 @@ class Grille():
         Returns:
             Case: case cherchée
         """
-
-        return self.cases[l,c]
+        if (0<=l<self.l) and (0<=c<self.c):
+            return self.cases[l,c], True
+        else:
+            print("Coordonnées de cases invalides.")
+            return 0, False
 
     def marquer_case(self, case):
         """ Marque la case.
@@ -170,6 +173,8 @@ class Grille():
         if isinstance(case, CaseVide) and decouverte_reussie:
 
             self.devoiler_voisins(case)
+        
+        return decouverte_reussie, etat_partie
             
             
 

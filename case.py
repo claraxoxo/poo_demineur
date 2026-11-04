@@ -1,4 +1,3 @@
-import numpy as np
 from etatcase import EtatCase
 
 class Case():
@@ -38,31 +37,49 @@ class Case():
         self.etat = e
 
     def decouvrir(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
 
         if self.etat == EtatCase.marquee:
 
             print('Cette case est déjà marquée. \n Faites une autre action.')
+            decouverte_reussie = False
             etat_partie = True
-            return False, etat_partie
+            return decouverte_reussie, etat_partie
 
         elif self.etat == EtatCase.devoilee:
             print('Cette case est déjà dévoilée. \n Faites une autre action.')
+            decouverte_reussie = False
             etat_partie = True
-            return False, etat_partie
+            return decouverte_reussie, etat_partie
         
         else:
             self.changer_etat(EtatCase.devoilee)
-            etat_partie = self.decouvrir()
+            decouverte_reussie = True
+            etat_partie = True
     
-            return True, etat_partie
+            return decouverte_reussie, etat_partie
 
 
 class CaseMinee(Case):
     
     def decouvrir(self):
+        """_summary_
 
-        print("Vous avez découvert une bombe !!!! C'est fini....")
-        return False
+        Returns:
+            _type_: _description_
+        """
+        
+        decouverte_reussie, etat_partie = super().decouvrir()
+
+        if decouverte_reussie:
+            print("Vous avez découvert une bombe !!!! C'est fini....")
+            etat_partie = False
+        
+        return decouverte_reussie, etat_partie 
 
 
 class CaseNumerotee(Case):
@@ -70,12 +87,8 @@ class CaseNumerotee(Case):
     def __init__(self, state, ligne, colonne, numero):
         super().__init__(state, ligne, colonne)
         self.num = numero
-    
-    def decouvrir(self):
-        pass
 
 class CaseVide(Case):
     
-    def decouvrir(self):
-        pass
+    pass
 

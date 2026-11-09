@@ -13,18 +13,37 @@ class Partie():
         # demander le niveau de difficulté (input)
 
         self.grille = Grille(self.taille_grille, self.nb_mines_initiales)
-        print(self.grille)
 
         etat_partie = True
-        question = 'Que voulez vous faire ? Au choix, vous pouvez : \n' \
-        '- Découvrir une case (écrire "découvrir x,y) \n' \
-        '- Marquer une case (écrire "marquer x,y) \n' \
+
+        question = '__________________________________________________________________ \n' \
+        'Que voulez vous faire ? Au choix, vous pouvez : \n' \
+        ' \n' \
+        '- Découvrir une case => taper "découvrir x,y" \n' \
+        '- Marquer une case => taper "marquer x,y" \n' \
+        ' \n ' \
         'avec x le numéro de ligne et y le numéro de colonne \n' \
-        'ATTENTION la numérotation des lignes et colonnes commence par 0'
+        'ATTENTION la numérotation des lignes et colonnes commence par 0 \n' \
+        ' \n ' \
+        '__________________________________________________________________ \n'
+
+
+        i = 1
 
         while self.nb_mines_restantes != 0 and etat_partie: 
+            print('__________________________________________________________________ ')
+            print(f'Coup n°{i} ')
+            print('\n')
+            print(self.grille)
+            print('\n')
+            
             reponse = input(question)
+
+
             fonction = reponse.split(" ")[0]
+            if fonction not in ('marquer, découvrir'):
+                print('Réponse invalide. Réécrivez votre choix.')
+                continue
             coord = reponse.split(" ")[1]
             x = int(coord.split(',')[0])
             y = int(coord.split(',')[1])
@@ -33,12 +52,13 @@ class Partie():
                 self.marquer_case(x,y)
   
             elif fonction == 'découvrir':
-                decouverte_reussie, etat_partie = self.decouvrir_case(x,y)
+                etat_partie = self.decouvrir_case(x,y)  
+ 
+            i += 1
 
-            
+        print("Vous avez gagné !!!! Bravo ")
 
-            else:
-                print("Votre demande n'est pas valide, refaites-la.")
+        return None
             
 
 

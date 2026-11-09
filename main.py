@@ -1,4 +1,6 @@
-from grille import Grille
+from partie import Partie
 
-g = Grille([10,10], 3)
-print(g)
+p = Partie()
+
+p.jouer()
+

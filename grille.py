@@ -118,7 +118,7 @@ class Grille():
         for coord in coord_voisins_case_vide:
 
             x,y = coord[0], coord[1]
-            case_voisine = self.trouver_case(x,y)
+            case_voisine = self.trouver_case(x,y)[0]
 
             if case_voisine.etat == EtatCase.devoilee:
                 continue
@@ -174,7 +174,7 @@ class Grille():
 
             self.devoiler_voisins(case)
         
-        return decouverte_reussie, etat_partie
+        return etat_partie
             
             
 

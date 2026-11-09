@@ -62,6 +62,24 @@ class Case():
             etat_partie = True
     
             return decouverte_reussie, etat_partie
+        
+    def demarquer(self):
+
+        if self.etat == EtatCase.marquee:
+            self.changer_etat(EtatCase.cachee)
+            return True
+        
+        elif self.etat == EtatCase.devoilee:
+            print('Cette case est déjà dévoilée, vous ne pouvez pas la démarquer. \n ' \
+            'Faites une autre action.')
+            return False
+        
+        else:
+            print("Cette case n'est pas marquée, vous ne pouvez pas la démarquer. \n " \
+            'Faites une autre action.')
+            return False
+
+
 
 
 class CaseMinee(Case):

@@ -152,7 +152,7 @@ class Grille():
         if (0<=l<self.l) and (0<=c<self.c):
             return self.cases[l,c], True
         else:
-            print("Coordonnées de cases invalides.")
+            print("Coordonnées de cases invalides. Refaites votre demande.")
             return 0, False
 
     def marquer_case(self, case):
@@ -174,8 +174,35 @@ class Grille():
 
             self.devoiler_voisins(case)
         
-        return etat_partie
-            
+        return decouverte_reussie, etat_partie
+
+    def demarquer_case(self, case):
+
+        demarquage_reussi = case.demarquer()
+        
+        return demarquage_reussi
+    
+    def verifier_victoire(self):
+
+        cases_minees_marquees = True
+        cases_autres_devoilees = True
+
+        for a in range(self.l):
+            for b in range(self.c):
+                case = self.trouver_case(a,b)[0]
+
+                if isinstance(case, CaseMinee) and case.etat != EtatCase.marquee:
+                    cases_minees_marquees = False
+                
+                elif not isinstance(case, CaseMinee) and case.etat != EtatCase.devoilee:
+                    cases_autres_devoilees = False
+
+        condition = cases_autres_devoilees or cases_minees_marquees
+
+        return condition 
+
+
+
             
 
 

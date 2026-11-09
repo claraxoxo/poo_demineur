@@ -2,5 +2,5 @@ from partie import Partie
 
 p = Partie()
 
-p.jouer()
+p.lancer_jeu()
 

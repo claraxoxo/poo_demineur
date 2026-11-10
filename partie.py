@@ -1,17 +1,20 @@
-import numpy as np
 from grille import Grille
-from etatcase import EtatCase
-from case import Case, CaseMinee, CaseNumerotee, CaseVide
 
 class Partie():
+    """ Classe représentant une partie de démineur.
+    """
 
     def __init__(self):
+        """ Constructeur.
+        """
 
         self.nb_mines_initiales = None
         self.nb_mines_restantes = None
         self.taille_grille = None
 
     def lancer_jeu(self):
+        """ Méthode qui lance le jeu. Possibilité de rejouer.
+        """
 
         rejouer = True
 
@@ -19,14 +22,35 @@ class Partie():
             self.jouer()
             rejouer = self.rejouer()
 
-        print(" Goodbye ")
+        print(" \n Goodbye ")
+    
+    def rejouer(self):
+        """ Méthode qui demande au joueur s'il veut rejouer.
+
+        Returns:
+            bool: True si le joueur veut rejouer, False sinon
+        """
+
+        reponse = input("Voulez-vous rejouer ? (oui/non) \n ")
+
+        while reponse not in ("oui", "non"):
+            print("Réponse invalide.")
+            reponse = input("Voulez-vous rejouer ? (oui/non) \n ")
+
+        return reponse == "oui"
 
     def jouer(self):
+        """ Lancement d'une partie de démineur.
+
+        Returns:
+            NoneType: retourne rien
+        """
         
-        
+        # choisir niveau de difficulté
         self.choisir_difficulte()
+
+        # création de la grille en fonction de la difficulté choisie 
         self.grille = Grille(self.taille_grille, self.nb_mines_initiales)
-        self.afficher_mines()
 
         question = '__________________________________________________________________ \n' \
         'Que voulez vous faire ? Au choix, vous pouvez : \n' \
@@ -40,10 +64,13 @@ class Partie():
         ' \n ' \
         '__________________________________________________________________ \n'
 
-
+        # compteur des coups
         i = 1
         
+        # partie pas gagnée
         victoire = False
+
+        # partie pas perdue
         etat_partie = True
 
         while not victoire and etat_partie: 
@@ -80,9 +107,9 @@ class Partie():
             elif fonction == 'démarquer':
                 case_trouvee = self.demarquer_case(x,y)
 
+            # si case pas trouvée, on recommence le coup
             if not case_trouvee:
                 continue
- 
             
             victoire = self.grille.verifier_victoire()
             i += 1
@@ -91,12 +118,13 @@ class Partie():
             print('Bravo !!!!!! Vous avez gagné ')
         else:
             print('... Vous avez perdu...') 
-        
-
-        return None
     
 
+        return None
+
     def choisir_difficulte(self):
+        """ Faire choisir la difficulté au joueur. Il y a 3 niveaux de difficultés différentes.
+        """
 
         string = 'Il y a 3 niveaux de difficulté : \n' \
         '1) Facile : grille 8x8 cases, 10% de mines \n' \
@@ -106,11 +134,10 @@ class Partie():
         'Choississez le niveau de difficulté en tapant son numéro : 1, 2 ou 3 \n' \
         '_______________________________________________________________________ \n'
 
+        # pas de réponse valide
         etat_reponse = False
         
-
         while not etat_reponse:
-
             reponse = input(string)
 
             try:
@@ -138,21 +165,20 @@ class Partie():
             else:
                 print("Le numéro de difficulté est invalide. Réécrivez votre choix.")
                 continue
-
+        
+        # initialise le nb de mines restantes aux nb de mines initiales
         self.nb_mines_restantes = self.nb_mines_initiales
 
-    def rejouer(self):
-
-        reponse = input("Voulez-vous rejouer ? (oui/non) : ")
-
-        while reponse not in ("oui", "non"):
-            print("Réponse invalide.")
-            reponse = input("Voulez-vous rejouer ? (oui/non) : ")
-
-        return reponse == "oui"
-
-
     def marquer_case(self, l, c):
+        """ Marque une case.
+
+        Args:
+            l (int): num de ligne de la case
+            c (int): num de colonne de la case
+
+        Returns:
+            bool: True si la case a été marquée, False sinon
+        """
         
         case, case_trouvee = self.grille.trouver_case(l,c)
         if case_trouvee:
@@ -164,6 +190,15 @@ class Partie():
             return False
         
     def demarquer_case(self, l, c):
+        """ Enlève la marque d'une case.
+
+        Args:
+            l (int): num de ligne de la case
+            c (int): num de colonne de la case
+
+        Returns:
+            bool: True si la marque a été enlevée, False sinon
+        """
 
         case, case_trouvee = self.grille.trouver_case(l,c)
         if case_trouvee:
@@ -174,9 +209,16 @@ class Partie():
         else:
             return False
 
-
-
     def decouvrir_case(self, l, c):
+        """ Découvre une case.
+
+        Args:
+            l (int): num de ligne de la case
+            c (int): num de colonne de la case
+
+        Returns:
+            tuple(bool): etat_partie (True si pas découvert de mine, False sinon), découverte de case réussie (True si oui, False sinon)
+        """
         
         case, case_trouvee = self.grille.trouver_case(l,c)
         if case_trouvee:
@@ -184,14 +226,7 @@ class Partie():
             return etat_partie, True
         else:
             return True, False
-        
-    def afficher_mines(self):
 
-        for a in range(self.grille.l):
-            for b in range(self.grille.c):
-
-                if isinstance(self.grille.cases[a,b], CaseMinee):
-                    print(f"Mine en ({a}, {b})")
         
     
         

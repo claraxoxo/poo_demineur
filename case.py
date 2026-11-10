@@ -1,11 +1,29 @@
 from etatcase import EtatCase
 
 class Case():
+    """ Classe mère caractérisant tous les types de cases du démineur.
+    """
 
     def __init__(self, state, ligne, colonne):
+        """ Constructeur
+
+        Args:
+            state (EtatCase): élément de l'énumération EtatCase (dévoilée, marquée ou cachée)
+            ligne (int): numéro de la ligne de la case
+            colonne (int): numéro de la colonne de la case
+        """
         self.etat = state
         self.l = ligne
         self.c = colonne
+
+    def changer_etat(self, e):
+        """ Change l'état d'une case.
+
+        Args:
+            e (EtatCase): état d'une case, compris dans l'énumération de EtatCase
+        """
+
+        self.etat = e
 
     def marquer(self):
         """ Marque une case.
@@ -15,7 +33,6 @@ class Case():
         """
 
         if self.etat == EtatCase.marquee:
-
             print('Cette case est déjà marquée. \n Faites une autre action.')
             return False
 
@@ -27,43 +44,37 @@ class Case():
             self.changer_etat(EtatCase.marquee)
             return True
 
-    def changer_etat(self, e):
-        """ Change l'état d'une case.
-
-        Args:
-            e (EtatCase): état d'une case, compris dans l'énumération de EtatCase
-        """
-
-        self.etat = e
-
     def decouvrir(self):
-        """_summary_
+        """ Découvre une case.
 
         Returns:
-            _type_: _description_
+            tuple(bool): renvoie 2 booléens, decouverte_reussie (True si la découverte a marché, False sinon) et etat_partie (True si partie pas perdue, 
+            False sinon => découverte de bombe)
         """
 
-        if self.etat == EtatCase.marquee:
+        etat_partie = True
 
+        if self.etat == EtatCase.marquee:
             print('Cette case est déjà marquée. \n Faites une autre action.')
             decouverte_reussie = False
-            etat_partie = True
             return decouverte_reussie, etat_partie
 
         elif self.etat == EtatCase.devoilee:
             print('Cette case est déjà dévoilée. \n Faites une autre action.')
             decouverte_reussie = False
-            etat_partie = True
             return decouverte_reussie, etat_partie
         
         else:
             self.changer_etat(EtatCase.devoilee)
             decouverte_reussie = True
-            etat_partie = True
-    
             return decouverte_reussie, etat_partie
         
     def demarquer(self):
+        """ Enlève la marque d'une case préalablement marquée.
+
+        Returns:
+            bool: renvoie 1 booléen (True si le démarquage a réussi et False sinon)
+        """
 
         if self.etat == EtatCase.marquee:
             self.changer_etat(EtatCase.cachee)
@@ -79,16 +90,19 @@ class Case():
             'Faites une autre action.')
             return False
 
-
-
-
 class CaseMinee(Case):
+    """ Classe de la case minée, classe fille de la classe Case.
+
+    Args:
+        Case (class): classe mère Case
+    """
     
     def decouvrir(self):
-        """_summary_
+        """ Découvre une case minée.
 
         Returns:
-            _type_: _description_
+            tuple(bool): renvoie 2 booléens, decouverte_reussie (True si la découverte a marché, False sinon) et etat_partie (True si partie pas perdue, 
+            False sinon => découverte de bombe)
         """
         
         decouverte_reussie, etat_partie = super().decouvrir()
@@ -99,14 +113,31 @@ class CaseMinee(Case):
         
         return decouverte_reussie, etat_partie 
 
-
 class CaseNumerotee(Case):
+    """ Classe de la case numérotée, classe fille de la classe Case.
+
+    Args:
+        Case (class): classe mère Case
+    """
     
     def __init__(self, state, ligne, colonne, numero):
+        """ Constructeur
+
+        Args:
+            state (EtatCase): élément de l'énumération EtatCase (dévoilée, marquée ou cachée)
+            ligne (int): numéro de la ligne de la case
+            colonne (int): numéro de la colonne de la case
+            numero (int): nombre de mines dans les cases limitrophes (cases en diagonales comptent)
+        """
         super().__init__(state, ligne, colonne)
         self.num = numero
 
 class CaseVide(Case):
+    """ Classe de la case vide, classe fille de la classe Case.
+
+    Args:
+        Case (class): classe mère Case
+    """
     
     pass
 

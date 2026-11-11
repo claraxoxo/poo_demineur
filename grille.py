@@ -61,13 +61,12 @@ class Grille():
         """
 
         strings = []
-        strings.append('    0 1 2 3 4 5 6 7 \n')
         
         # boucle sur les lignes
         for x in range(self.l):
             
             # création string vide pour une ligne
-            string = " "+str(x)+' '
+            string = " "
 
             # boucle sur les colonnes
             for y in range(self.c):

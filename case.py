@@ -5,7 +5,7 @@ class Case():
     """
 
     def __init__(self, state, ligne, colonne):
-        """ Constructeur
+        """ Constructeur.
 
         Args:
             state (EtatCase): élément de l'énumération EtatCase (dévoilée, marquée ou cachée)
